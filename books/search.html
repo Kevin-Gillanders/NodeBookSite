@@ -1,0 +1,23 @@
+
+<html>
+
+    <script>
+        // $(function() {
+        //     var msgFromServer;
+        //     $.get( "/test", function( data ) {
+        //         msgFromServer = data.text;
+        //         alert( "Received data from server!" );
+        //     });
+        // });
+    </script>
+    
+    <body>
+        <h1>This is a search page</h1>
+
+        <form action="/books/search" method="GET">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title">
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+<html>
