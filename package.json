@@ -1,0 +1,30 @@
+{
+  "name": "nodebookwebsite",
+  "version": "1.0.0",
+  "description": "A site for tracking when I start and finsh a book",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "pug": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kevin-Gillanders/NodeBookSite.git"
+  },
+  "keywords": [
+    "books",
+    "track",
+    "logging"
+  ],
+  "author": "Kevin Gillanders",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kevin-Gillanders/NodeBookSite/issues"
+  },
+  "homepage": "https://github.com/Kevin-Gillanders/NodeBookSite#readme"
+}

@@ -62,7 +62,23 @@ app.get(("/books/search"), (req, res) =>
 });
 
 app.get('/hello', function (req, res) {
-    res.render('hello', { title: 'Hello', message: 'Hello there!sdfadsfsadf' })
-  });
+    res.render('hello', { title: 'Hello', message: 'Hello there!sdfadsfsadf' });
+});
+
+app.get('/demo/test', function (req, res) {
+    var listOfStuff = ["cat", "dog", "mouse"];
+    res.render('demo/test', 
+    { 
+        newTitle: 'Hello', 
+        message: "this is a demo section", 
+        book: 
+        {
+            title: "Dune", 
+            author :'Frank Herbert', 
+            cover: 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1567929075i/39776179._SY180_.jpg'
+        }, 
+        listOfStuff: listOfStuff 
+    });
+});
 
 

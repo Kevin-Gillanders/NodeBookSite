@@ -1,0 +1,24 @@
+mixin ElemsInList(list)
+    ol
+        each value in list
+            li= value
+mixin book(book)
+    h2(id='blah' ) Title : #{book.title}
+    - var img= book.cover
+    div
+        img(style="vertical-align:middle"  src= img)
+        span
+            | This book was written by #{book.author}
+
+
+html
+    head
+        title= newTitle
+    body
+        h1= message
+        p 
+            | This is some pain text for testing
+        div
+            +ElemsInList(listOfStuff)
+        div 
+            +book(book)
