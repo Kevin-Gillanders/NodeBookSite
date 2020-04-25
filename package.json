@@ -4,6 +4,7 @@
   "description": "A site for tracking when I start and finsh a book",
   "main": "index.js",
   "dependencies": {
+    "acorn": "^7.1.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "pug": "^2.0.4"
