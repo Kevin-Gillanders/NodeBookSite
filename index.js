@@ -1,7 +1,9 @@
+require('dotenv').config();
 const http = require('http');
 const express = require('express');
-var app = express();
+const app = express();
 const bodyParser = require('body-parser');
+const search = require("./controllers/externalSearch/externalSearch");
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -13,7 +15,9 @@ app.set('views', 'views');
 app.set('view engine', 'pug')
 
 
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+});
 
 
 /*
@@ -21,7 +25,9 @@ app.listen(port, () => console.log(`Example app listening at http://localhost:${
 Index
 ===========================================
 */
-app.get('/', (req, res) => res.sendFile(__dirname + "/" + 'home.html'));
+app.get('/', (req, res) => {
+    return res.sendFile(__dirname + "/views/" + 'home.html');
+});
 
 
 /*
@@ -30,7 +36,7 @@ Books
 ===========================================
 */
 app.get('/books', function (req, res) {
-    res.sendFile(__dirname + "/books/" + 'search.html');
+    res.sendFile(__dirname + "/views/searchGoodreads/" + 'search.html');
 });
 
 
@@ -50,19 +56,33 @@ app.post(("/books/search"), (req, res) =>
     res.end();
 });
 
-app.get(("/books/search"), (req, res) =>
+app.get(("/books/externalSearch"), (req, res) =>
 {
 
     console.log(req.query.title);
 
     let title = req.query.title;
+    // res.setHeader('Content-Type', 'application/json');
+    // res.write(`You searched for : ${search.search(title)}`);
+    // res.json(search.search(title));
+    search.searchGoodreads(title, (err, data) => {    
+        
+        console.log(data);
+        res.render('demo/search', {data: data});
+        res.end();
+    });
 
-    res.write(`You searched for : ${title}`);
-    res.end();
 });
 
+
+
+/*
+===========================================
+Test stuff
+===========================================
+*/
 app.get('/hello', function (req, res) {
-    res.render('hello', { title: 'Hello', message: 'Hello there!sdfadsfsadf' });
+    res.render('demo/hello', { title: 'Hello', message: 'Hello there!sdfadsfsadf' });
 });
 
 app.get('/demo/test', function (req, res) {
