@@ -67,7 +67,8 @@ app.get(("/books/externalSearch"), (req, res) =>
     // res.json(search.search(title));
     search.searchGoodreads(title, (err, data) => {    
         
-        console.log(data);
+        // console.log(data);
+
         res.render('demo/search', {data: data});
         res.end();
     });
