@@ -58,20 +58,35 @@ app.post(("/books/search"), (req, res) =>
 
 app.get(("/books/externalSearch"), (req, res) =>
 {
-
+    //TODO Create logic module
     console.log(req.query.title);
 
     let title = req.query.title;
     // res.setHeader('Content-Type', 'application/json');
     // res.write(`You searched for : ${search.search(title)}`);
     // res.json(search.search(title));
-    search.searchGoodreads(title, (err, data) => {    
+    
+    search.searchGoodreads(title, (err, bookData) => {    
         
-        // console.log(data);
-
-        res.render('demo/search', {data: data});
+        
+        bookData.forEach((book) =>{
+            console.log("aadsfdsafdsaf");
+            console.log(book);
+            
+            console.log("***************************");
+            search.advancedSearchGoodReads(book, (err, data)=>{
+                console.log(data);
+                console.log("+++++++++++++++++++++++++++++");
+            });
+        }); 
+        res.render('demo/search', {data: "DFASFD"});
         res.end();
+        // // console.
     });
+
+// log("ahhhhhhhhhhhhhhhh");
+    
+
 
 });
 
