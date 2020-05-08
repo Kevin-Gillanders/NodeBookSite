@@ -73,34 +73,27 @@ app.get(("/books/externalSearch"), (req, res) =>
         .then(bookData => {    
             console.log(bookData);
             results = bookData.length;
-            for(var book of bookData)
-            {
-                console.log("aadsfdsafdsaf");
-                console.log(book);
-                
-                console.log("***************************");
-                // search.advancedSearchGoodReads(book)
-                // .then( data =>{
-                //     console.log(data);
-                //     console.log("+++++++++++++++++++++++++++++");
-                //     jsonData.push(data);
-                //     if (jsonData.length == results)
-                //     {
-                //         console.log(jsonData)
-                //         jsonData = JSON.stringify(jsonData);
-                //         res.render('demo/search', {data: jsonData});
-                        // res.end();
-                //     }
-                // });
-            } 
+
+            // console.log("aadsfdsafdsaf");
+            // console.log(book);
+            
+            // console.log("***************************");
+            search.advancedSearchGoodReads(bookData)
+            .then( data =>{
+                console.log("+++++++++++++++++++++++++++++");
+                console.log(data);
+                console.log("+++++++++++++++++++++++++++++");
+                res.render('demo/search', {data: JSON.stringify(data)});
+                res.end();
+            });
+        }) 
             // // 
-        });
+    
     // }
     // catch(error)
     // {}
-
-    console.log("ahhhhhhhhhhhhhhhh");
     
+
 
 
 });

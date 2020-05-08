@@ -101,37 +101,62 @@ const extractData =  async (message) =>
 
 const advancedSearchGoodReads = async (message) =>
 {
+    var advData = [];
+    return new Promise((resolve, reject) => {
+        try
+        {
+            for(var book of message)
+            { 
+                advData.push(advancedQueryGoodReads(book));
+            }
+        }
+        catch(error)
+        {
+            reject(error);
+        }
+        finally{
+            resolve( Promise.all(advData));
+        }
+    });
 
-    return new Promise((resolve, reject) => { 
-        var goodReadsID = message.GoodReadsID;
+}
+const advancedQueryGoodReads = async (book) =>
+{
+    return new Promise((resolve, reject) => 
+    {
+
+        var goodReadsID = book.GoodReadsID;
         var advancedSearch = `https://www.goodreads.com/book/show/${goodReadsID}.xml?key=n0mstayRjsbdLBxIiBcGg`;
 
         axios.get(advancedSearch).then(response => {
             xmlParser.parseString(response.data, (err, res) =>{
-                var advancedData = JSON.parse(JSON.stringify(res));
-                // console.log(advancedData);
-                // console.log(advancedData.GoodreadsResponse.book[0]);
-                // console.log(advancedData.GoodreadsResponse.book[0].work[0].rating_dist);
-                // console.log(advancedData.GoodreadsResponse.book[0].num_pages);
-                // console.log(advancedData.GoodreadsResponse.book[0].popular_shelves[0].shelf[1]);
-                // console.log(advancedData.GoodreadsResponse.book[0].popular_shelves[0].shelf[1]);
-                var num_pages = advancedData.GoodreadsResponse.book[0].num_pages[0];
-                
-                message.num_pages = num_pages;
-                
-                // console.log(message);
+                try
+                {
+                    var advancedData = JSON.parse(JSON.stringify(res));
+                    var num_pages = advancedData.GoodreadsResponse.book[0].num_pages[0];
+                    
+                    book.num_pages = num_pages;
+                    
+                    // console.log(message);
 
-                resolve(message);
+                }
+                catch(error)
+                {
+                    reject(error);
+                }
+                finally
+                {
+                    resolve(book);
+                }
             });
         })
+        
         .catch(error => {
             console.log(error);
             reject(error);
         });
     });
-
 }
-
 const parseShelves = (goodReadsID, data) =>
 {
 
