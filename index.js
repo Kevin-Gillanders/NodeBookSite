@@ -65,24 +65,37 @@ app.get(("/books/externalSearch"), (req, res) =>
     // res.setHeader('Content-Type', 'application/json');
     // res.write(`You searched for : ${search.search(title)}`);
     // res.json(search.search(title));
-    
-    search.searchGoodreads(title, (err, bookData) => {    
-        
-        
-        bookData.forEach((book) =>{
-            console.log("aadsfdsafdsaf");
-            console.log(book);
+    var jsonData = [];
+    var results = 0;
+    try
+    {
+        search.searchGoodreads(title, (err, bookData) => {    
             
-            console.log("***************************");
-            search.advancedSearchGoodReads(book, (err, data)=>{
-                console.log(data);
-                console.log("+++++++++++++++++++++++++++++");
-            });
-        }); 
-        res.render('demo/search', {data: "DFASFD"});
-        res.end();
-        // // console.
-    });
+            results = bookData.length;
+            for(var book of bookData)
+            {
+                // console.log("aadsfdsafdsaf");
+                // console.log(book);
+                
+                // console.log("***************************");
+                search.advancedSearchGoodReads(book, (err, data)=>{
+                    // console.log(data);
+                    // console.log("+++++++++++++++++++++++++++++");
+                    jsonData.push(data);
+                    if (jsonData.length == results)
+                    {
+                        console.log(jsonData)
+                        jsonData = JSON.stringify(jsonData);
+                        res.render('demo/search', {data: jsonData});
+                        res.end();
+                    }
+                });
+            } 
+            // // console.
+        });
+    }
+    catch(error)
+    {}
 
 // log("ahhhhhhhhhhhhhhhh");
     
