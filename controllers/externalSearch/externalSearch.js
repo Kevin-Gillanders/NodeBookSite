@@ -25,19 +25,6 @@ searchGoodreads = async (title) =>
                             booksData.push(extractData(book));
                         });
                     });
-
-
-                    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-                    // console.log("OUTER");
-                    // console.log(booksData);
-                    // console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-                            
-                    // console.log(books);
-                    // , (err, res) =>{
-
-                    //     console.log("out");
-                    // });
-                    //TODO add error handling
                 }
                 catch(error){
                     console.log(error);
@@ -74,8 +61,6 @@ const extractData =  async (message) =>
             var cover = message.best_book[0].image_url[0];
             
             // var num_pages = advancedData.GoodreadsResponse.book[0].num_pages[0];
-
-
             var jsonData = 
             {
                 "GoodReadsID" : goodReadsID,
@@ -86,7 +71,6 @@ const extractData =  async (message) =>
                 "GoodReadsAuthorID" : authorID,
                 "AuthorName" : authorName,
                 "Cover" : cover
-
             };
             // console.log(jsonData);
             resolve(jsonData);
@@ -99,13 +83,13 @@ const extractData =  async (message) =>
 
 } 
 
-const advancedSearchGoodReads = async (message) =>
+const advancedSearchGoodReads = async (books) =>
 {
     var advData = [];
     return new Promise((resolve, reject) => {
         try
         {
-            for(var book of message)
+            for(var book of books)
             { 
                 advData.push(advancedQueryGoodReads(book));
             }
@@ -133,11 +117,18 @@ const advancedQueryGoodReads = async (book) =>
                 try
                 {
                     var advancedData = JSON.parse(JSON.stringify(res));
-                    var num_pages = advancedData.GoodreadsResponse.book[0].num_pages[0];
+
                     
-                    book.num_pages = num_pages;
+                    book.isbn = advancedData.GoodreadsResponse.book[0].isbn13;
+                    book.publisher = advancedData.GoodreadsResponse.book[0].publisher[0];
+                    book.num_pages = advancedData.GoodreadsResponse.book[0].num_pages[0];
+                    book.description = advancedData.GoodreadsResponse.book[0].description[0];
+                    book.original_title = (advancedData.GoodreadsResponse.book[0].original_title  != null ? advancedData.GoodreadsResponse.book[0].original_title[0] : "");
+                    book.rating_dist = (advancedData.GoodreadsResponse.book[0].rating_dist  != null ? advancedData.GoodreadsResponse.book[0].rating_dist[0] : "");
                     
-                    // console.log(message);
+                    // console.log(JSON.stringify(advancedData.GoodreadsResponse.book[0].authors, null, 2));
+                    // console.log(advancedData.GoodreadsResponse.book[0]);
+                    // console.log("==============================");
 
                 }
                 catch(error)

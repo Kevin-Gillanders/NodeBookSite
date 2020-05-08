@@ -3,5 +3,8 @@ html
     body
         h1
             | Data returned by GR
-        p= data 
+        for book in data
+            div
+                h3 #{book.Title} 
+                p !{book.description}
             

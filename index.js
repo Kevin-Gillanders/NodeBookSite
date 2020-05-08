@@ -56,7 +56,7 @@ app.post(("/books/search"), (req, res) =>
     res.end();
 });
 
-app.get(("/books/externalSearch"), (req, res) =>
+app.get(("/books/externalSearch"), async (req, res) =>
 {
     //TODO Create logic module
     console.log(req.query.title);
@@ -65,28 +65,15 @@ app.get(("/books/externalSearch"), (req, res) =>
     // res.setHeader('Content-Type', 'application/json');
     // res.write(`You searched for : ${search.search(title)}`);
     // res.json(search.search(title));
-    var jsonData = [];
-    var results = 0;
-    // try
-    // {
-        search.searchGoodreads(title)
-        .then(bookData => {    
-            console.log(bookData);
-            results = bookData.length;
 
-            // console.log("aadsfdsafdsaf");
-            // console.log(book);
-            
-            // console.log("***************************");
-            search.advancedSearchGoodReads(bookData)
-            .then( data =>{
-                console.log("+++++++++++++++++++++++++++++");
-                console.log(data);
-                console.log("+++++++++++++++++++++++++++++");
-                res.render('demo/search', {data: JSON.stringify(data)});
-                res.end();
-            });
-        }) 
+        var bookData = await search.searchGoodreads(title);
+        var data = await search.advancedSearchGoodReads(bookData);
+        console.log(data);
+
+        res.render('demo/search', {data: data});
+        res.end();
+        //     });
+        // }) 
             // // 
     
     // }
