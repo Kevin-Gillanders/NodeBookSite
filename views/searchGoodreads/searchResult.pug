@@ -1,0 +1,14 @@
+html
+    include ../mixins/util
+    body
+        div
+            div
+                h2
+                    | Search results for 
+                    b #{title}
+            div
+                for book in data
+                    +displayData(book)
+            
+            
+            

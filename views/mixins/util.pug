@@ -1,0 +1,6 @@
+mixin displayData(book)
+    div
+        h3 #{book.Title} 
+        div
+            p !{book.description}
+            img(src=`${book.Cover}`, alt=`cover for ${book.Title}`)

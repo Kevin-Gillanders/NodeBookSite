@@ -2,8 +2,11 @@ require('dotenv').config();
 const http = require('http');
 const express = require('express');
 const app = express();
+const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
-const search = require("./controllers/externalSearch/externalSearch");
+const path = require('path');
+
+const externalSearch = require("./controllers/externalSearch/externalSearchUtil");
 
 const hostname = '127.0.0.1';
 const port = 3000;
@@ -11,12 +14,14 @@ const port = 3000;
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(express.json());
 
+app.use(favicon(path.join(__dirname , 'public', 'favicon.ico')));
+
 app.set('views', 'views');
 app.set('view engine', 'pug')
 
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`Example app listening at http://localhost:${port}`);
 });
 
 
@@ -26,7 +31,7 @@ Index
 ===========================================
 */
 app.get('/', (req, res) => {
-    return res.sendFile(__dirname + "/views/" + 'home.html');
+    res.sendFile(path.join(__dirname ,  "views", "searchGoodreads" , "search.html"));
 });
 
 
@@ -35,8 +40,8 @@ app.get('/', (req, res) => {
 Books
 ===========================================
 */
-app.get('/books', function (req, res) {
-    res.sendFile(__dirname + "/views/searchGoodreads/" + 'search.html');
+app.get('/books',  (req, res) => {
+    res.sendFile(path.join(__dirname , "views", "searchGoodreads", "search.html"));
 });
 
 
@@ -65,17 +70,22 @@ app.get(("/books/externalSearch"), async (req, res) =>
     // res.setHeader('Content-Type', 'application/json');
     // res.write(`You searched for : ${search.search(title)}`);
     // res.json(search.search(title));
+    try{
+        // var bookData = await search.searchGoodreads(title);
+        // var data = await search.advancedSearchGoodReads(bookData);
+        var data = await externalSearch.searchGoodreads(title);
 
-        var bookData = await search.searchGoodreads(title);
-        var data = await search.advancedSearchGoodReads(bookData);
-        console.log(data);
+        res.render(path.join('searchGoodreads', 'searchResult'), {data: data, title: title});
 
-        res.render('demo/search', {data: data});
+    }
+    catch(error)
+    {
+        console.log(error);
+        res.render(path.join('shared', 'error.html'), {error: error})
+    }
+    finally{
         res.end();
-        //     });
-        // }) 
-            // // 
-    
+    }
     // }
     // catch(error)
     // {}
@@ -92,11 +102,11 @@ app.get(("/books/externalSearch"), async (req, res) =>
 Test stuff
 ===========================================
 */
-app.get('/hello', function (req, res) {
+app.get('/hello',  (req, res) => {
     res.render('demo/hello', { title: 'Hello', message: 'Hello there!sdfadsfsadf' });
 });
 
-app.get('/demo/test', function (req, res) {
+app.get('/demo/test', (req, res) => {
     var listOfStuff = ["cat", "dog", "mouse"];
     res.render('demo/test', 
     { 
