@@ -74,7 +74,6 @@ app.get(("/books/externalSearch"), async (req, res) =>
         // var bookData = await search.searchGoodreads(title);
         // var data = await search.advancedSearchGoodReads(bookData);
         var data = await externalSearch.searchGoodreads(title);
-
         res.render(path.join('searchGoodreads', 'searchResult'), {data: data, title: title});
 
     }
